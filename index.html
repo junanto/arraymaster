@@ -11,34 +11,34 @@
     <div class="main-container">
         <header>
             <h1>GRID MASTER: ARRAY ADVENTURE</h1>
+            <div class="stats-bar">
+                <div class="stat-box">NYAWA: <span id="lives-display">❤️❤️❤️</span></div>
+                <div class="stat-box">SKOR: <span id="score-display">0</span></div>
+            </div>
         </header>
 
         <div class="game-layout">
-            <!-- Bagian Kiri: Grid Interaktif -->
             <div class="grid-section">
-                <table id="game-grid">
-                    <!-- Grid akan diisi oleh JavaScript -->
-                </table>
+                <table id="game-grid"></table>
             </div>
 
-            <!-- Bagian Kanan: Kontrol dan Tugas -->
             <div class="control-section">
                 <div class="panel current-task">
                     <h2>TUGAS SEKARANG</h2>
-                    <p id="task-prompt">Loading tugas...</p>
+                    <p id="task-prompt">Loading...</p>
                 </div>
 
                 <div class="panel input-panel">
                     <div class="input-group">
-                        <label for="row-input">ROW INDEX (i):</label>
+                        <label for="row-input">ROW (i):</label>
                         <input type="number" id="row-input" min="0" max="3" placeholder="0-3">
                     </div>
                     <div class="input-group">
-                        <label for="col-input">COLUMN INDEX (j):</label>
+                        <label for="col-input">COLUMN (j):</label>
                         <input type="number" id="col-input" min="0" max="3" placeholder="0-3">
                     </div>
                     <button id="check-btn" class="btn-primary">CHECK CELL</button>
-                    <button id="reset-btn" class="btn-secondary">RESET GRID</button>
+                    <button id="reset-btn" class="btn-secondary">GAME BARU</button>
                 </div>
 
                 <div class="panel code-reference">
@@ -48,20 +48,22 @@
                     </div>
                 </div>
 
-                <!-- Mascot/Feedback Area -->
                 <div class="robot-feedback">
-                    <img src="https://i.imgur.com/8N6gH6M.png" alt="Robot Mascot" class="robot-icon">
-                    <p id="robot-speak">Halo! Siap belajar Array 2D?</p>
+                    <p id="robot-speak">Halo! Mari kita mulai.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Bagian Bawah: Log Aktivitas -->
+        <div class="leaderboard-section">
+            <h3>🏆 TOP 5 LEADERBOARD</h3>
+            <ol id="leaderboard-list">
+                <li>Memuat data leaderboard...</li>
+            </ol>
+        </div>
+
         <div class="log-section">
             <h3>LOG AKTIVITAS</h3>
-            <ul id="activity-log">
-                <li>Game dimulai. Masukkan koordinat untuk mencari item.</li>
-            </ul>
+            <ul id="activity-log"></ul>
         </div>
     </div>
 
