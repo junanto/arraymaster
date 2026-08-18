@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Master: Array Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <h1>GRID MASTER: ARRAY ADVENTURE</h1>
+        </header>
+
+        <div class="game-layout">
+            <!-- Bagian Kiri: Grid Interaktif -->
+            <div class="grid-section">
+                <table id="game-grid">
+                    <!-- Grid akan diisi oleh JavaScript -->
+                </table>
+            </div>
+
+            <!-- Bagian Kanan: Kontrol dan Tugas -->
+            <div class="control-section">
+                <div class="panel current-task">
+                    <h2>TUGAS SEKARANG</h2>
+                    <p id="task-prompt">Loading tugas...</p>
+                </div>
+
+                <div class="panel input-panel">
+                    <div class="input-group">
+                        <label for="row-input">ROW INDEX (i):</label>
+                        <input type="number" id="row-input" min="0" max="3" placeholder="0-3">
+                    </div>
+                    <div class="input-group">
+                        <label for="col-input">COLUMN INDEX (j):</label>
+                        <input type="number" id="col-input" min="0" max="3" placeholder="0-3">
+                    </div>
+                    <button id="check-btn" class="btn-primary">CHECK CELL</button>
+                    <button id="reset-btn" class="btn-secondary">RESET GRID</button>
+                </div>
+
+                <div class="panel code-reference">
+                    <h3>REFERENSI KODE</h3>
+                    <div class="code-display">
+                        <code>matrix[<span id="code-row">i</span>][<span id="code-col">j</span>]</code>
+                    </div>
+                </div>
+
+                <!-- Mascot/Feedback Area -->
+                <div class="robot-feedback">
+                    <img src="https://i.imgur.com/8N6gH6M.png" alt="Robot Mascot" class="robot-icon">
+                    <p id="robot-speak">Halo! Siap belajar Array 2D?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Bawah: Log Aktivitas -->
+        <div class="log-section">
+            <h3>LOG AKTIVITAS</h3>
+            <ul id="activity-log">
+                <li>Game dimulai. Masukkan koordinat untuk mencari item.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
