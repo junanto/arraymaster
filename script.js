@@ -170,12 +170,13 @@ colInput.addEventListener('input', () => updateCodeReference(rowInput.value || '
 
 
 // Fungsi Utama Cek Jawaban
+// Fungsi Utama Cek Jawaban (Dengan Petunjuk Jarak Manhattan)
 function checkCell() {
     attempts++;
     const r = parseInt(rowInput.value);
     const c = parseInt(colInput.value);
 
-    // Validasi Input
+    // 1. Validasi Input
     if (isNaN(r) || isNaN(c) || r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) {
         updateRobot("Hei! Masukkan angka antara 0 sampai 3 untuk Baris dan Kolom.", "error");
         addLog(`Percobaan #${attempts}: Input tidak valid (${rowInput.value},${colInput.value}).`, "error");
@@ -187,17 +188,21 @@ function checkCell() {
     const foundItem = gameMatrix[r][c];
     cellEl.textContent = foundItem; // Buka item di UI
 
+    // 2. Cek Apakah Jawaban Benar
     if (r === currentTarget.row && c === currentTarget.col) {
-        // MENANG
         cellEl.classList.add('found');
         updateRobot("Luar biasa! Kamu menemukannya dengan tepat. Matriks[i][j] bukan masalah bagimu!", "success");
         addLog(`Percobaan #${attempts}: grid[${r}][${c}] - Ditemukan: ${foundItem}. STATUS: BENAR!`, "success");
-        taskPrompt.innerHTML = `<span style="color:var(--accent-green); font-weight:bold;">TUGAS SELESAI! Click Reset untuk bermain lagi.</span>`;
+        taskPrompt.innerHTML = `<span style="color:var(--accent-green); font-weight:bold;">TUGAS SELESAI! Klik Reset untuk bermain lagi.</span>`;
         checkBtn.disabled = true;
     } else {
-        // SALAH
-        updateRobot(`Hmm, matrix[${r}][${c}] berisi ${foundItem}. Bukan itu yang kita cari. Coba lagi!`, "normal");
-        addLog(`Percobaan #${attempts}: grid[${r}][${c}] - Ditemukan: ${foundItem}. STATUS: SALAH.`, "normal");
+        // 3. Hitung Jarak Manhattan Jika Jawaban Salah
+        // Rumus: |baris_target - baris_input| + |kolom_target - kolom_input|
+        const distance = Math.abs(currentTarget.row - r) + Math.abs(currentTarget.col - c);
+
+        // Tampilkan petunjuk jarak di area Robot dan Log
+        updateRobot(`Bukan target! matrix[${r}][${c}] berisi ${foundItem}. Petunjuk: Jarak ke target = ${distance} langkah lagi!`, "normal");
+        addLog(`Percobaan #${attempts}: grid[${r}][${c}] - Ditemukan: ${foundItem} (Jarak ke target: ${distance} langkah).`, "normal");
     }
 }
 
