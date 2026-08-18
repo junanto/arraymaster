@@ -1,0 +1,194 @@
+:root {
+    --bg-color: #030e25;
+    --panel-color: #0a1f44;
+    --text-color: #ffffff;
+    --accent-blue: #00d2ff;
+    --accent-orange: #ff9f43;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --border-color: #1c3a6b;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-container {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header h1 {
+    text-align: center;
+    color: var(--accent-blue);
+    text-shadow: 0 0 10px rgba(0,210,255,0.7);
+    margin: 0 0 10px 0;
+}
+
+.game-layout {
+    display: flex;
+    gap: 20px;
+}
+
+/* --- GRID SECTION --- */
+.grid-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--panel-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+/* Styling Label Baris/Kolom */
+.row-label, .col-label {
+    font-weight: bold;
+    color: var(--accent-orange);
+    font-size: 1.2em;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Styling Sel Grid */
+td.grid-cell {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--border-color);
+    background: rgba(255,255,255,0.05);
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+td.grid-cell:hover {
+    background: rgba(0,210,255,0.1);
+}
+
+td.grid-cell.highlight {
+    background-color: rgba(255, 159, 67, 0.3); /* Orange Highlight */
+    border-color: var(--accent-orange);
+}
+
+td.grid-cell.found {
+    background-color: rgba(46, 204, 113, 0.2); /* Green */
+}
+
+/* --- CONTROL SECTION --- */
+.control-section {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel {
+    background: var(--panel-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.panel h2, .panel h3 {
+    margin-top: 0;
+    color: var(--accent-orange);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.input-group {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="number"] {
+    width: 60px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 5px;
+    font-size: 1.1em;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
+    transition: opacity 0.2s;
+}
+
+button:hover { opacity: 0.8; }
+
+.btn-primary { background-color: var(--accent-blue); color: #000; }
+.btn-secondary { background-color: #57606f; color: #fff; }
+
+.code-display {
+    background: #000;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+#code-row, #code-col { color: var(--accent-orange); font-weight: bold; }
+
+.robot-feedback {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0,210,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-blue);
+}
+
+.robot-icon { width: 60px; height: 60px; }
+
+/* --- LOG SECTION --- */
+.log-section {
+    background: var(--panel-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.log-section h3 { margin-top: 0; color: #a4b0be; }
+
+#activity-log {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-family: monospace;
+    color: #a4b0be;
+}
+
+#activity-log li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid var(--border-color); }
+#activity-log li.error { border-left-color: var(--accent-red); color: var(--accent-red); }
+#activity-log li.success { border-left-color: var(--accent-green); color: var(--accent-green); }
