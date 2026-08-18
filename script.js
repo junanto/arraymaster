@@ -2,6 +2,7 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec";
 
 const GRID_SIZE = 4;
+const MAX_LIVES = 10; // Nyawa maksimal diubah menjadi 10
 const ITEMS = {
     TREASURE: '📦',
     KEY: '🔑',
@@ -13,7 +14,7 @@ const ITEMS = {
 let gameMatrix = [];
 let currentTarget = { item: '', row: -1, col: -1 };
 let attempts = 0;
-let lives = 3;
+let lives = MAX_LIVES;
 let score = 0;
 let playerName = "";
 
@@ -47,7 +48,7 @@ function askPlayerName() {
 
 function initGame() {
     attempts = 0;
-    lives = 3;
+    lives = MAX_LIVES; // Mengatur ulang ke 10 nyawa
     rowInput.value = '';
     colInput.value = '';
     if (checkBtn) checkBtn.disabled = false;
@@ -64,10 +65,10 @@ function initGame() {
 }
 
 function updateLivesDisplay() {
-    let hearts = "";
-    for (let i = 0; i < lives; i++) hearts += "❤️";
-    for (let i = lives; i < 3; i++) hearts += "🖤";
-    if (livesDisplay) livesDisplay.textContent = hearts;
+    // Menampilkan angka nyawa dan simbol hati agar tampilan tetap rapi
+    if (livesDisplay) {
+        livesDisplay.textContent = `❤️ ${lives}/${MAX_LIVES}`;
+    }
 }
 
 function updateScoreDisplay() {
@@ -214,22 +215,21 @@ function checkCell() {
     }
 }
 
-// --- INTEGRASI GOOGLE SHEETS (DIPERBAIKI) ---
+// --- INTEGRASI GOOGLE SHEETS ---
 
 function saveScoreToSheets(name, finalScore) {
     if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === "") return;
 
-    // Mengirim data JSON lewat POST
     fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Diperlukan untuk Google Apps Script dari domain luar
+        mode: "no-cors",
         headers: {
-            "Content-Type": "text/plain" // Menggunakan text/plain agar tidak memicu pembatasan preflight CORS
+            "Content-Type": "text/plain"
         },
         body: JSON.stringify({ nama: name, skor: finalScore })
     }).then(() => {
         addLog("Skor berhasil dikirim ke Google Sheets!", "success");
-        setTimeout(fetchLeaderboard, 2000); // Perbarui Papan Peringkat
+        setTimeout(fetchLeaderboard, 2000);
     }).catch(err => {
         console.error("Gagal simpan skor:", err);
         addLog("Gagal mengirim skor ke server.", "error");
