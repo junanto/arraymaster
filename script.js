@@ -1,4 +1,4 @@
-// --- MASUKKAN GOOGLE APPS SCRIPT WEB APP URL DI SINI ---
+// URL Google Apps Script Anda
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec";
 
 const GRID_SIZE = 4;
@@ -67,11 +67,11 @@ function updateLivesDisplay() {
     let hearts = "";
     for (let i = 0; i < lives; i++) hearts += "❤️";
     for (let i = lives; i < 3; i++) hearts += "🖤";
-    livesDisplay.textContent = hearts;
+    if (livesDisplay) livesDisplay.textContent = hearts;
 }
 
 function updateScoreDisplay() {
-    scoreDisplay.textContent = score;
+    if (scoreDisplay) scoreDisplay.textContent = score;
 }
 
 function generateMatrixData() {
@@ -204,6 +204,8 @@ function checkCell() {
             updateRobot(`☠️ GAME OVER! Nyawa habis. Total Skor: ${score}`, "error");
             addLog(`GAME OVER! Total Skor Akhir: ${score}`, "error");
             if (checkBtn) checkBtn.disabled = true;
+            
+            // Simpan skor akhir saat Game Over
             saveScoreToSheets(playerName, score);
         } else {
             updateRobot(`Salah! matrix[${r}][${c}] = ${foundItem}. Jarak target = ${distance} langkah. Sisa nyawa: ${lives}`, "normal");
@@ -212,43 +214,54 @@ function checkCell() {
     }
 }
 
-// --- INTEGRASI GOOGLE SHEETS ---
+// --- INTEGRASI GOOGLE SHEETS (DIPERBAIKI) ---
 
 function saveScoreToSheets(name, finalScore) {
-    if (GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec") return;
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === "") return;
 
+    // Mengirim data JSON lewat POST
     fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
+        mode: "no-cors", // Diperlukan untuk Google Apps Script dari domain luar
+        headers: {
+            "Content-Type": "text/plain" // Menggunakan text/plain agar tidak memicu pembatasan preflight CORS
+        },
         body: JSON.stringify({ nama: name, skor: finalScore })
     }).then(() => {
-        setTimeout(fetchLeaderboard, 1500); // Refresh leaderboard
-    }).catch(err => console.error("Gagal simpan skor:", err));
+        addLog("Skor berhasil dikirim ke Google Sheets!", "success");
+        setTimeout(fetchLeaderboard, 2000); // Perbarui Papan Peringkat
+    }).catch(err => {
+        console.error("Gagal simpan skor:", err);
+        addLog("Gagal mengirim skor ke server.", "error");
+    });
 }
 
 function fetchLeaderboard() {
-    if (GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec") {
-        leaderboardList.innerHTML = "<li>Isi <code>GOOGLE_SCRIPT_URL</code> untuk mengaktifkan leaderboard.</li>";
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.trim() === "") {
+        if (leaderboardList) leaderboardList.innerHTML = "<li>URL Google Script belum diisi.</li>";
         return;
     }
 
     fetch(GOOGLE_SCRIPT_URL)
         .then(res => res.json())
         .then(data => {
+            if (!leaderboardList) return;
             leaderboardList.innerHTML = "";
-            if (data.length === 0) {
+            
+            if (!data || data.length === 0) {
                 leaderboardList.innerHTML = "<li>Belum ada data skor.</li>";
                 return;
             }
-            data.forEach((item, index) => {
+
+            data.forEach((item) => {
                 const li = document.createElement("li");
                 li.textContent = `${item.nama} - ${item.skor} Poin`;
                 leaderboardList.appendChild(li);
             });
         })
         .catch(err => {
-            leaderboardList.innerHTML = "<li>Gagal memuat leaderboard.</li>";
+            console.error("Gagal memuat leaderboard:", err);
+            if (leaderboardList) leaderboardList.innerHTML = "<li>Gagal memuat leaderboard.</li>";
         });
 }
 
