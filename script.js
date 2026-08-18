@@ -1,5 +1,5 @@
 // --- MASUKKAN GOOGLE APPS SCRIPT WEB APP URL DI SINI ---
-const GOOGLE_SCRIPT_URL = "PASANG_URL_GOOGLE_APPS_SCRIPT_ANDA_DI_SINI";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec";
 
 const GRID_SIZE = 4;
 const ITEMS = {
@@ -228,7 +228,7 @@ function saveScoreToSheets(name, finalScore) {
 }
 
 function fetchLeaderboard() {
-    if (GOOGLE_SCRIPT_URL === "PASANG_URL_GOOGLE_APPS_SCRIPT_ANDA_DI_SINI") {
+    if (GOOGLE_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwG8lq190jpyH_IdNdWFKYTzdUavPZSQTeEufq91a6pCA-qb7l1E8326KatmwY5V9s/exec") {
         leaderboardList.innerHTML = "<li>Isi <code>GOOGLE_SCRIPT_URL</code> untuk mengaktifkan leaderboard.</li>";
         return;
     }
